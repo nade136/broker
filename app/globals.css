@@ -1,26 +1,170 @@
 @import "tailwindcss";
 
+/* Class-based dark mode so ThemeProvider can toggle via .dark on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #141d22;
+  --primary: #0d9488;
+  --primary-hover: #0f766e;
+  --muted: #64748b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-muted: var(--muted);
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Dark theme */
+:root[data-theme="dark"] {
+  --background: #050816;
+  --foreground: #e5e7eb;
+  --primary: #22c55e;
+  --primary-hover: #16a34a;
+  --muted: #9ca3af;
+}
+
+html,
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Allow document to scroll on all viewports (homepage, dashboard, admin, etc.) */
+html {
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 100%;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y pan-x;
+}
+
+body {
+  overflow-x: hidden;
+  overflow-y: visible;
+  min-height: 100%;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y pan-x;
+}
+
+/* Animation keyframes */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Initial state for scroll-triggered elements */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.animate-on-scroll.animate-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+.animate-on-scroll.animate-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+.animate-on-scroll.animate-in-left {
+  animation: fade-in-left 0.6s ease-out forwards;
+}
+
+.animate-on-scroll.animate-in-right {
+  animation: fade-in-right 0.6s ease-out forwards;
+}
+
+.animate-on-scroll.animate-in-scale {
+  animation: scale-in 0.5s ease-out forwards;
+}
+
+/* Stagger delays */
+.animate-delay-1 { animation-delay: 0.1s; }
+.animate-delay-2 { animation-delay: 0.2s; }
+.animate-delay-3 { animation-delay: 0.3s; }
+.animate-delay-4 { animation-delay: 0.4s; }
+.animate-delay-5 { animation-delay: 0.5s; }
+
+/* Hero / page load entrance */
+.animate-hero-in {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.animate-hero-image {
+  animation: fade-in-right 0.9s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+/* Smooth image zoom on hover */
+.hover-zoom img {
+  transition: transform 0.5s ease;
+}
+.hover-zoom:hover img {
+  transform: scale(1.05);
+}
+
+/* Mount animation (e.g. dropdowns) */
+.animate-mount-in {
+  animation: scale-in 0.2s ease-out forwards;
 }
