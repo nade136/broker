@@ -10,6 +10,7 @@ const ADMIN_LOGIN = "/admin/login";
 const adminLinks = [
   { label: "Overview", href: "/admin" },
   { label: "Notifications", href: "/admin/notifications" },
+  { label: "Verification", href: "/admin/verification" },
   { label: "Users", href: "/admin/users" },
   { label: "Plans", href: "/admin/plans" },
   { label: "Deposit methods", href: "/admin/deposit-methods" },

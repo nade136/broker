@@ -49,11 +49,15 @@ export default function BalanceCards() {
         {TYPES.map((key) => (
           <div
             key={key}
-            className="flex flex-col justify-between rounded-2xl bg-white px-5 py-4 shadow-sm dark:bg-slate-900"
+            className="flex flex-col justify-between rounded-xl border border-gray-100 bg-white px-5 py-4 shadow-sm dark:border-slate-800 dark:bg-slate-900"
           >
-            <div className="text-xs font-semibold text-gray-500">{LABELS[key]}</div>
-            <div className="mt-4 text-xs text-gray-400">Available Balance</div>
-            <div className="mt-1 text-xl font-semibold text-[#141d22] dark:text-gray-100">…</div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+              {LABELS[key]}
+            </div>
+            <div className="mt-4 text-xs text-gray-400 dark:text-gray-500">Available balance</div>
+            <div className="mt-1.5 text-right text-2xl font-semibold tabular-nums text-[#141d22] dark:text-gray-100">
+              —
+            </div>
           </div>
         ))}
       </section>
@@ -65,12 +69,19 @@ export default function BalanceCards() {
       {TYPES.map((key) => (
         <div
           key={key}
-          className="flex flex-col justify-between rounded-2xl bg-white px-5 py-4 shadow-sm dark:bg-slate-900"
+          className="flex flex-col justify-between rounded-xl border border-gray-100 bg-white px-5 py-4 shadow-sm dark:border-slate-800 dark:bg-slate-900"
         >
-          <div className="text-xs font-semibold text-gray-500">{LABELS[key]}</div>
-          <div className="mt-4 text-xs text-gray-400">Available Balance</div>
-          <div className="mt-1 text-xl font-semibold text-[#141d22] dark:text-gray-100">
-            ${Number(balances[key]).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          <div className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+            {LABELS[key]}
+          </div>
+          <div className="mt-4 text-xs text-gray-400 dark:text-gray-500">Available balance</div>
+          <div className="mt-1.5 text-right text-2xl font-semibold tabular-nums text-[#141d22] dark:text-gray-100">
+            {Number(balances[key]).toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
           </div>
         </div>
       ))}

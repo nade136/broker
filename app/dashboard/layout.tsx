@@ -9,6 +9,7 @@ import { supabase } from "@/lib/supabase/client";
 const sidebarLinks = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "Account", href: "/dashboard/account" },
+  { label: "Verification", href: "/dashboard/verification" },
   { label: "Messages", href: "/dashboard/messages" },
   { label: "Plans", href: "/dashboard/plans" },
   { label: "Bonus", href: "/dashboard/bonus" },
@@ -66,10 +67,10 @@ function Sidebar({
                   <Link
                     href={item.href}
                     onClick={onNavigate}
-                    className={`flex items-center rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                    className={`flex items-center rounded-lg border-l-2 px-3 py-2 text-xs font-medium transition-colors ${
                       active
-                        ? "bg-yellow-400/10 text-yellow-500"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+                        ? "border-amber-500 bg-amber-500/10 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400"
+                        : "border-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
                     }`}
                   >
                     {item.label}
@@ -85,17 +86,17 @@ function Sidebar({
             Funds
           </p>
           <ul className="space-y-1">
-            {sidebarLinks.slice(6, 8).map((item) => {
+            {sidebarLinks.slice(7, 9).map((item) => {
               const active = pathname === item.href;
               return (
                 <li key={item.href}>
                   <Link
                     href={item.href}
                     onClick={onNavigate}
-                    className={`flex items-center rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                    className={`flex items-center rounded-lg border-l-2 px-3 py-2 text-xs font-medium transition-colors ${
                       active
-                        ? "bg-yellow-400/10 text-yellow-500"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+                        ? "border-amber-500 bg-amber-500/10 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400"
+                        : "border-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
                     }`}
                   >
                     {item.label}
@@ -115,13 +116,15 @@ function Sidebar({
           document.cookie = "user_session=; path=/; max-age=0";
           window.location.href = "/login";
         }}
-        className="mt-4 inline-flex items-center justify-center rounded-lg bg-red-50 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-300 dark:hover:bg-red-900/40"
+        className="mt-auto inline-flex w-full items-center justify-center rounded-lg border border-gray-200 py-2 text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:border-slate-700 dark:text-gray-400 dark:hover:bg-slate-800 dark:hover:text-gray-200"
       >
-        Sign Out
+        Sign out
       </button>
     </aside>
   );
 }
+
+const KYC_BAR_DISMISSED_KEY = "kyc_bar_dismissed";
 
 export default function DashboardLayout({
   children,
@@ -131,6 +134,8 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userName, setUserName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
+  const [kycStatus, setKycStatus] = useState<"approved" | "pending" | "rejected" | null>(null);
+  const [kycBarDismissed, setKycBarDismissed] = useState(false);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -140,12 +145,33 @@ export default function DashboardLayout({
         const { data: profile } = await supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle();
         const name = profile?.full_name?.trim() || (user.user_metadata?.full_name ?? user.user_metadata?.name ?? "").trim() || "User";
         setUserName(name);
+        const { data: kyc } = await supabase.from("kyc_submissions").select("status").eq("user_id", user.id).maybeSingle();
+        setKycStatus((kyc?.status as "approved" | "pending" | "rejected") ?? null);
       }
     };
     loadUser();
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setKycBarDismissed(sessionStorage.getItem(KYC_BAR_DISMISSED_KEY) === "1");
+  }, []);
+
+  const showKycBar = kycStatus !== null && kycStatus !== "approved" && !kycBarDismissed;
+
+  const dismissKycBar = () => {
+    sessionStorage.setItem(KYC_BAR_DISMISSED_KEY, "1");
+    setKycBarDismissed(true);
+  };
+
   const initial = userName ? userName.charAt(0).toUpperCase() : "U";
+
+  const greeting = (() => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 18) return "Good afternoon";
+    return "Good evening";
+  })();
 
   return (
     <div className="min-h-screen w-full bg-gray-50 text-[#141d22] dark:bg-[#020617] dark:text-gray-100 md:flex md:h-screen md:overflow-hidden">
@@ -179,8 +205,8 @@ export default function DashboardLayout({
               </svg>
             </button>
             <div className="min-w-0 flex-1">
-              <span className="block truncate text-xs text-gray-500 dark:text-gray-400">
-                Good Morning 👋
+              <span className="block truncate text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                {greeting}
               </span>
               <span className="block truncate text-sm font-semibold text-[#141d22] dark:text-gray-100">
                 {userName || "…"}
@@ -188,20 +214,67 @@ export default function DashboardLayout({
             </div>
           </div>
           <div className="flex shrink-0 items-center gap-2 sm:gap-4">
+            {kycStatus === "approved" ? (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="hidden sm:inline">KYC verified</span>
+                <span className="sm:hidden">Verified</span>
+              </span>
+            ) : kycStatus !== null ? (
+              <Link
+                href="/dashboard/verification"
+                className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-700 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:hover:bg-amber-900/50"
+              >
+                {kycStatus === "pending" ? (
+                  <><span className="hidden sm:inline">KYC pending</span><span className="sm:hidden">Pending</span></>
+                ) : (
+                  <><span className="hidden sm:inline">KYC not verified</span><span className="sm:hidden">Verify</span></>
+                )}
+              </Link>
+            ) : null}
             <ThemeToggle />
-            <div className="hidden items-center gap-2 sm:flex">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-yellow-400 text-xs font-semibold text-black">
-                {initial}
-              </div>
-              <div className="flex flex-col text-right">
-                <span className="text-xs font-medium truncate max-w-[120px]">{userName || "…"}</span>
-                <span className="text-[11px] text-gray-500 dark:text-gray-400 truncate max-w-[120px]">
+            <div className="hidden items-center gap-3 sm:flex">
+              <div className="flex flex-col text-right min-w-0">
+                <span className="block truncate max-w-[140px] text-sm font-medium text-[#141d22] dark:text-gray-100">
+                  {userName || "…"}
+                </span>
+                <span className="block truncate max-w-[140px] text-xs text-gray-500 dark:text-gray-400">
                   {userEmail || "…"}
                 </span>
+              </div>
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-amber-500/10 text-sm font-semibold text-amber-700 dark:border-slate-700 dark:bg-amber-500/20 dark:text-amber-400">
+                {initial}
               </div>
             </div>
           </div>
         </header>
+        {showKycBar && (
+          <div className="flex shrink-0 items-center justify-between gap-2 border-b border-amber-200 bg-amber-50 px-4 py-2 dark:border-amber-900/50 dark:bg-amber-900/20">
+            <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
+              Please complete your identity verification to access all features.
+            </p>
+            <div className="flex shrink-0 items-center gap-2">
+              <Link
+                href="/dashboard/verification"
+                className="rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-600"
+              >
+                Verify now
+              </Link>
+              <button
+                type="button"
+                onClick={dismissKycBar}
+                className="rounded p-1 text-amber-700 hover:bg-amber-200/50 dark:text-amber-300 dark:hover:bg-amber-800/50"
+                aria-label="Dismiss"
+              >
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
         <main className="min-w-0 bg-gray-50 px-4 py-6 dark:bg-[#020617] sm:px-6 md:min-h-0 md:flex-1 md:overflow-y-auto md:overflow-x-hidden md:shrink-0" style={{ WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
           <div className="mx-auto max-w-6xl pb-8 min-h-[calc(100vh-4rem)]">{children}</div>
         </main>

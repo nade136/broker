@@ -37,12 +37,6 @@ export default function AboutUsPage() {
                   >
                     Join Us
                   </Link>
-                  <Link
-                    href="/create-account"
-                    className="inline-flex items-center justify-center rounded-full border-2 border-[#141d22] bg-transparent px-8 py-4 text-base font-medium text-[#141d22] transition-all duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-md"
-                  >
-                    Try free demo
-                  </Link>
                 </div>
               </div>
               <div className="animate-hero-image relative aspect-[4/3] overflow-hidden rounded-2xl shadow-xl">

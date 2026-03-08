@@ -85,7 +85,7 @@ export default function MarketsWidget() {
   })();
 
   return (
-    <section className="rounded-2xl bg-white shadow-sm dark:bg-slate-900 overflow-hidden">
+    <section className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
       <div className="border-b border-gray-100 px-4 py-3 dark:border-slate-800 sm:px-5">
         <div className="flex flex-wrap items-center gap-2">
           {TABS.map((tab) => (
@@ -93,10 +93,10 @@ export default function MarketsWidget() {
               key={tab}
               type="button"
               onClick={() => setActiveTab(tab)}
-              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+              className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
                 activeTab === tab
-                  ? "bg-yellow-400 text-black"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-slate-800 dark:text-gray-300 dark:hover:bg-slate-700"
+                  ? "bg-amber-500/15 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400"
+                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-slate-800 dark:hover:text-gray-200"
               }`}
             >
               {tab}
@@ -112,8 +112,19 @@ export default function MarketsWidget() {
           </div>
         )}
         {loading && !crypto && !forex && (
-          <div className="flex h-48 items-center justify-center text-sm text-gray-500 dark:text-gray-400">
-            Loading markets…
+          <div className="animate-pulse px-4 py-4 sm:px-5">
+            <div className="flex gap-4 border-b border-gray-100 py-3 dark:border-slate-800">
+              <div className="h-4 w-24 rounded bg-gray-200 dark:bg-slate-700" />
+              <div className="h-4 w-20 rounded bg-gray-200 dark:bg-slate-700" />
+              <div className="h-4 w-16 rounded bg-gray-200 dark:bg-slate-700" />
+            </div>
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="flex gap-4 border-b border-gray-50 py-3 dark:border-slate-800/50">
+                <div className="h-4 w-28 rounded bg-gray-100 dark:bg-slate-800" />
+                <div className="h-4 w-20 rounded bg-gray-100 dark:bg-slate-800" />
+                <div className="h-4 w-14 rounded bg-gray-100 dark:bg-slate-800" />
+              </div>
+            ))}
           </div>
         )}
         {!loading && !error && (
@@ -122,8 +133,8 @@ export default function MarketsWidget() {
               <thead>
                 <tr className="border-b border-gray-100 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:border-slate-800 dark:text-gray-400">
                   <th className="px-4 py-3 sm:px-5">Symbol</th>
-                  <th className="px-4 py-3 sm:px-5">Last Price</th>
-                  <th className="px-4 py-3 sm:px-5 text-right">24h Change</th>
+                  <th className="px-4 py-3 sm:px-5 text-right">Last price</th>
+                  <th className="px-4 py-3 sm:px-5 text-right">24h change</th>
                   <th className="w-20 px-4 py-3 sm:px-5 text-right"></th>
                 </tr>
               </thead>
@@ -148,7 +159,7 @@ export default function MarketsWidget() {
                           <span className="ml-1 hidden text-gray-500 dark:text-gray-400 sm:inline">· {row.name}</span>
                         </div>
                       </td>
-                      <td className="px-4 py-3 sm:px-5 font-medium tabular-nums text-[#141d22] dark:text-gray-100">
+                      <td className="px-4 py-3 sm:px-5 text-right font-medium tabular-nums text-[#141d22] dark:text-gray-100">
                         {formatPrice(row.price)}
                       </td>
                       <td className="px-4 py-3 sm:px-5 text-right">
@@ -165,7 +176,7 @@ export default function MarketsWidget() {
                       <td className="px-4 py-3 sm:px-5 text-right">
                         <Link
                           href="/dashboard/markets"
-                          className="inline-flex items-center rounded-lg bg-yellow-400 px-3 py-1.5 text-xs font-semibold text-black transition-opacity hover:opacity-90"
+                          className="inline-flex items-center rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-amber-600 dark:bg-amber-500 dark:hover:bg-amber-600"
                         >
                           Trade
                         </Link>

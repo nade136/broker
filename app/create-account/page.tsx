@@ -5,7 +5,7 @@ import CreateAccountForm from "./CreateAccountForm";
 
 export const metadata: Metadata = {
   title: "Create Account",
-  description: "Open a Web account to start trading, mining, and investing. Try free demo available.",
+  description: "Open a Web account to start trading, mining, and investing.",
 };
 
 export default function CreateAccountPage() {
