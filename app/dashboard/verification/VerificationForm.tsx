@@ -115,9 +115,10 @@ export default function VerificationForm() {
     );
   }
 
-  const isApproved = kyc !== "none" && (kyc as KycRow).status === "approved";
-  const isPending = kyc !== "none" && (kyc as KycRow).status === "pending";
-  const isRejected = kyc !== "none" && (kyc as KycRow).status === "rejected";
+  const kycRow: KycRow | null = kyc === "none" ? null : (kyc as KycRow);
+  const isApproved = kycRow?.status === "approved";
+  const isPending = kycRow?.status === "pending";
+  const isRejected = kycRow?.status === "rejected";
 
   return (
     <div className="space-y-6">
@@ -129,7 +130,7 @@ export default function VerificationForm() {
           Submit an ID document so we can verify your account. Optional: add a selfie.
         </p>
 
-        {isApproved && (
+        {isApproved && kycRow && (
           <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 dark:border-emerald-900/50 dark:bg-emerald-900/20">
             <p className="text-sm font-medium text-emerald-800 dark:text-emerald-200">
               Your identity has been verified.
@@ -137,10 +138,10 @@ export default function VerificationForm() {
           </div>
         )}
 
-        {isRejected && kyc !== "none" && (kyc as KycRow).rejection_reason && (
+        {isRejected && kycRow?.rejection_reason && (
           <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 dark:border-amber-900/50 dark:bg-amber-900/20">
             <p className="text-xs font-medium text-amber-800 dark:text-amber-200">
-              Previous submission was declined: {(kyc as KycRow).rejection_reason}
+              Previous submission was declined: {kycRow.rejection_reason}
             </p>
             <p className="mt-1 text-xs text-amber-700 dark:text-amber-300">
               You can submit new documents below.
