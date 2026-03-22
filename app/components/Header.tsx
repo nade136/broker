@@ -8,7 +8,7 @@ const tradingLinks = [
   { label: "Stocks Trading", href: "/stocks-trading" },
   { label: "Options Trading", href: "/options-trading" },
   { label: "Crypto Trading", href: "/crypto-trading" },
-  { label: "Copy Trading", href: "/copy-trading" },
+  { label: "Auto Trading", href: "/copy-trading" },
 ];
 
 const miningLinks = [

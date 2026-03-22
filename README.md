@@ -82,3 +82,13 @@ The app creates **maturity events** when a user’s plan term is reached and **a
    - **Manual:** `curl -H "Authorization: Bearer YOUR_CRON_SECRET" https://your-app.com/api/cron/maturity`
    - **Vercel Cron:** Add a cron in the Vercel project that hits `GET /api/cron/maturity` with `Authorization: Bearer YOUR_CRON_SECRET` (or use `vercel.json` and Vercel’s cron with the secret in env).
    - **External cron (e.g. cron-job.org):** Schedule GET or POST to `/api/cron/maturity` with header `Authorization: Bearer YOUR_CRON_SECRET` or `x-cron-secret: YOUR_CRON_SECRET`.
+
+## Supabase heartbeat (optional)
+
+A **small, scheduled request** can touch your database once per day so the project isn’t completely idle for weeks. This uses the **same `CRON_SECRET`** as the maturity job — it does **not** log in as a user or impersonate anyone; it runs one lightweight `profiles` read with the **service role** (like the maturity cron).
+
+- **Endpoint:** `GET` or `POST` `/api/cron/heartbeat`
+- **Auth:** `Authorization: Bearer YOUR_CRON_SECRET` or header `x-cron-secret: YOUR_CRON_SECRET`
+- **Manual:** `curl -H "Authorization: Bearer YOUR_CRON_SECRET" https://your-app.com/api/cron/heartbeat`
+- **Vercel:** Root `vercel.json` schedules this daily at **12:00 UTC** (`0 12 * * *`). Set **`CRON_SECRET`** in the Vercel project environment. (Vercel Cron availability depends on your Vercel plan — if crons aren’t available, use cron-job.org or GitHub Actions with the same `curl` + header.)
+- **Not a guarantee** that Supabase will never pause a free project; for production uptime, consider Supabase **Pro**.

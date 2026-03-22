@@ -53,7 +53,7 @@ export default function CreateAccountForm() {
     <div className="animate-hero-in rounded-2xl border border-gray-200 bg-white p-8 shadow-sm opacity-0 transition-shadow duration-300 hover:shadow-lg">
       <h1 className="text-2xl font-bold text-[#141d22]">Create account</h1>
       <p className="mt-2 text-sm text-gray-600">
-        Register to access trading, mining, and copy trading.
+        Register to access trading, mining, and auto trading.
       </p>
       <form onSubmit={handleSubmit} className="mt-8 space-y-5">
         {error && (

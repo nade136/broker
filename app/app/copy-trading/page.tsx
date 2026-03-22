@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Copy Trading",
+  title: "Auto Trading",
 };
 
 const traders = [
@@ -12,15 +12,15 @@ const traders = [
   { name: "Meghan Lawrence", winRate: "94% win rate" },
 ];
 
-export default function CopyTradingPage() {
+export default function AutoTradingPage() {
   return (
     <div className="rounded-2xl bg-white px-5 py-5 shadow-sm dark:bg-slate-900">
       <h1 className="mb-4 text-base font-semibold text-[#141d22] dark:text-gray-100">
-        Copy Trading
+        Auto Trading
       </h1>
       <input
         type="search"
-        placeholder="Search for traders..."
+        placeholder="Search strategies..."
         className="mb-4 w-full rounded-full border border-gray-200 px-4 py-2 text-xs outline-none focus:border-teal-500 dark:border-gray-700 dark:bg-transparent dark:text-gray-100"
       />
       <ul className="space-y-2 text-xs">

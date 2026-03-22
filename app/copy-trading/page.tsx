@@ -2,10 +2,15 @@ import type { Metadata } from "next";
 import PlaceholderPage from "../components/PlaceholderPage";
 
 export const metadata: Metadata = {
-  title: "Copy Trading",
-  description: "Copy top traders and mirror their strategies in real time.",
+  title: "Auto Trading",
+  description: "Automated trading strategies that execute in real time.",
 };
 
 export default function Page() {
-  return <PlaceholderPage title="Copy Trading" description="Follow experienced traders and automatically copy their strategies." />;
+  return (
+    <PlaceholderPage
+      title="Auto Trading"
+      description="Use automated strategies that follow professional rules and execute trades in real time."
+    />
+  );
 }

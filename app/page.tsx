@@ -87,7 +87,7 @@ const whyUs = [
   },
 ];
 
-const copyTradingImage = `${UNSPLASH}/photo-1552664730-d307ca884978?w=800&q=80`;
+const autoTradingImage = `${UNSPLASH}/photo-1552664730-d307ca884978?w=800&q=80`;
 
 function StatIcon({ type }: { type: string }) {
   const cls = "h-8 w-8 text-teal-600";
@@ -265,18 +265,18 @@ function WhyUsIcon({ type, className }: { type: string; className?: string }) {
   }
 }
 
-const copySteps = [
+const autoTradingSteps = [
   {
-    title: "Browse Top Traders",
-    description: "Explore profiles, performance, and risk levels.",
+    title: "Browse automated strategies",
+    description: "Explore performance, risk levels, and how each strategy works.",
   },
   {
-    title: "Choose and Copy",
-    description: "Select who you want to copy and set your investment amount.",
+    title: "Choose your strategy",
+    description: "Pick the automation that fits your goals and set your investment amount.",
   },
   {
-    title: "Trade Automatically",
-    description: "Your account mirrors the trader's moves in real-time.",
+    title: "Trade automatically",
+    description: "Your account follows the automated rules and executes in real time.",
   },
 ];
 
@@ -305,7 +305,7 @@ const footerTrading = [
   { label: "Stocks Trading", href: "/stocks-trading" },
   { label: "Options Trading", href: "/options-trading" },
   { label: "Crypto Trading", href: "/crypto-trading" },
-  { label: "Copy Trading", href: "/copy-trading" },
+  { label: "Auto Trading", href: "/copy-trading" },
 ];
 
 const footerLearn = [
@@ -388,6 +388,12 @@ export default function Home() {
                 className="inline-flex items-center justify-center rounded-lg bg-amber-400 px-6 py-3.5 text-sm font-medium text-black shadow-sm transition hover:bg-amber-500 sm:px-8 sm:py-4 sm:text-base"
               >
                 Create Account
+              </Link>
+              <Link
+                href="/login"
+                className="inline-flex items-center justify-center rounded-lg bg-amber-400 px-6 py-3.5 text-sm font-medium text-black shadow-sm transition hover:bg-amber-500 sm:px-8 sm:py-4 sm:text-base"
+              >
+                Login
               </Link>
             </div>
           </div>
@@ -531,7 +537,7 @@ export default function Home() {
           </div>
         </AnimateIn>
 
-        {/* Copy Trading */}
+        {/* Auto trading */}
         <AnimateIn
           as="section"
           variant="up"
@@ -541,8 +547,8 @@ export default function Home() {
             <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
               <div className="group relative aspect-video overflow-hidden rounded-xl shadow-lg">
                 <Image
-                  src={copyTradingImage}
-                  alt="Copy trading - follow top traders and mirror their strategies in real time"
+                  src={autoTradingImage}
+                  alt="Auto trading — automated strategies executing in real time"
                   fill
                   className="object-cover transition-transform group-hover:scale-105"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -550,17 +556,17 @@ export default function Home() {
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-white sm:text-3xl">
-                  Copy Top Traders, Earn Like the Pros
+                  Automate Your Trading, Earn Like the Pros
                 </h2>
                 <p className="mt-3 text-sm text-gray-300 sm:mt-4 sm:text-base">
-                  Discover a smarter way to trade. Follow experienced traders
-                  and automatically copy their strategies in real-time.
+                  Discover a smarter way to trade. Use automated strategies that
+                  follow professional rules and execute in real time.
                 </p>
                 <h3 className="mt-6 text-lg font-semibold text-white sm:mt-8 sm:text-xl">
                   How it works
                 </h3>
                 <ul className="mt-3 space-y-3 sm:mt-4 sm:space-y-4">
-                  {copySteps.map((step, i) => (
+                  {autoTradingSteps.map((step, i) => (
                     <li key={step.title} className="flex gap-3 sm:gap-4">
                       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-400 text-xs font-semibold text-black sm:h-8 sm:w-8 sm:text-sm">
                         {i + 1}
@@ -621,6 +627,12 @@ export default function Home() {
                 className="inline-flex items-center justify-center rounded-lg bg-amber-400 px-6 py-3.5 text-sm font-medium text-black shadow-sm transition hover:bg-amber-500 sm:px-8 sm:py-4 sm:text-base"
               >
                 Create Account
+              </Link>
+              <Link
+                href="/login"
+                className="inline-flex items-center justify-center rounded-lg bg-amber-400 px-6 py-3.5 text-sm font-medium text-black shadow-sm transition hover:bg-amber-500 sm:px-8 sm:py-4 sm:text-base"
+              >
+                Login
               </Link>
             </div>
           </div>
