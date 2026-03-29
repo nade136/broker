@@ -9,12 +9,13 @@ export default function CreateAccountForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [adminNotifyWarning, setAdminNotifyWarning] = useState("");
+  const [notifyTeamWarning, setNotifyTeamWarning] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setMessage("");
+    setNotifyTeamWarning("");
     setLoading(true);
     const form = e.currentTarget;
     const fullName = (form.elements.namedItem("fullName") as HTMLInputElement).value.trim();
@@ -42,7 +43,7 @@ export default function CreateAccountForm() {
 
     const notifyResult = await notifyAdminNewUserSignup(email, fullName, data.user?.id ?? null);
     if (!notifyResult.ok) {
-      setAdminNotifyWarning(notifyResult.reason);
+      setNotifyTeamWarning(notifyResult.reason);
     }
 
     if (data.user && data.session) {
@@ -51,7 +52,7 @@ export default function CreateAccountForm() {
     }
 
     const pendingMsg =
-      "Your account was created. An administrator must approve it before you can sign in. You will receive an email when your access is ready.";
+      "Your account was created. Your access must be approved before you can sign in. You will receive an email when your access is ready.";
     if (data.user && !data.session) {
       setMessage(`${pendingMsg} If required, check your email to confirm your address, then wait for approval.`);
     } else {
@@ -75,9 +76,9 @@ export default function CreateAccountForm() {
             {message}
           </p>
         )}
-        {adminNotifyWarning && (
+        {notifyTeamWarning && (
           <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900">
-            <strong>Admin email:</strong> {adminNotifyWarning}
+            <strong>Notification:</strong> {notifyTeamWarning}
           </p>
         )}
         <div>

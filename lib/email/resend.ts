@@ -43,7 +43,7 @@ export async function sendTransactionalEmail(
   }
 }
 
-/** Short line for admin UI / flash messages */
+/** Short line for control UI / flash messages */
 export function describeSendEmailResult(r: SendEmailResult): string {
   if (r.ok) return "Email sent successfully.";
   if (r.reason === "missing_api_key") return "Email not sent: add RESEND_API_KEY to environment.";

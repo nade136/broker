@@ -34,7 +34,7 @@ async function assertAdminCaller(accessToken: string | null | undefined): Promis
       if (profile?.role === "admin") {
         return { ok: true, callerId: caller.id };
       }
-      return { ok: false, error: "Only admins can perform this action." };
+      return { ok: false, error: "Only staff can perform this action." };
     }
   }
 
@@ -46,13 +46,13 @@ async function assertAdminCaller(accessToken: string | null | undefined): Promis
   return {
     ok: false,
     error:
-      "Admin session not found. Sign out and sign in again at /admin/login, and use the same site URL you used to log in (e.g. if you use port 3001, always use 3001).",
+      "Staff session not found. Sign out and sign in again from the staff sign-in page, using the same site URL you used to log in (e.g. if you use port 3001, always use 3001).",
   };
 }
 
 export type CreateAdminResult = { ok: true } | { ok: false; error: string };
 
-/** Create a new user and set their role to admin. */
+/** Create a new user and grant staff (role admin in DB). */
 export async function createAdminUser(
   email: string,
   password: string,
@@ -89,7 +89,7 @@ export async function createAdminUser(
   if (updateError) {
     return {
       ok: false,
-      error: "User created but failed to set as admin: " + updateError.message,
+      error: "User created but failed to grant staff access: " + updateError.message,
     };
   }
 
@@ -98,7 +98,7 @@ export async function createAdminUser(
 
 export type DeleteUserResult = { ok: true } | { ok: false; error: string };
 
-/** Deletes the auth user (cascades profile and related rows). Caller must be an admin. */
+/** Deletes the auth user (cascades profile and related rows). Caller must be staff. */
 export async function deleteUserAccount(
   targetUserId: string,
   accessToken: string | null | undefined,
@@ -127,7 +127,7 @@ export async function deleteUserAccount(
   if (target.role === "admin") {
     return {
       ok: false,
-      error: "Cannot delete an admin here. Demote them to user first (e.g. in Supabase), or remove admin in SQL.",
+      error: "Cannot delete a staff account here. Demote them to user first (e.g. in Supabase), or adjust the role in SQL.",
     };
   }
 

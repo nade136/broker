@@ -124,11 +124,11 @@ async function runMaturityJob() {
               <p><strong>User:</strong> ${safeName} (${safeEmail})</p>
               <p><strong>Maturity amount:</strong> ${maturityAmount}</p>
               <p>Approve or reject within about 5 minutes (or the system will auto-approve).</p>
-              <p><a href="${appUrl}/admin/notifications">Open admin notifications</a></p>
+              <p><a href="${appUrl}/admin/notifications">Open notifications</a></p>
             `;
             const sent = await sendTransactionalEmail(adminInbox, subject, html);
             if (!sent.ok) {
-              console.error("Maturity cron: admin email failed", sent);
+              console.error("Maturity cron: team notification email failed", sent);
             }
           }
         }

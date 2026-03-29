@@ -21,7 +21,7 @@ export default function DepositPage() {
         <DepositForm />
       </Suspense>
       <p className="text-[11px] text-gray-500 dark:text-gray-400">
-        After you make a payment, upload a screenshot and click &quot;Send to admin&quot;. The admin will be notified by email and can review it in Notifications.
+        After you make a payment, upload a screenshot and click &quot;Submit proof&quot;. Our team will be notified and will review your submission.
       </p>
     </div>
   );

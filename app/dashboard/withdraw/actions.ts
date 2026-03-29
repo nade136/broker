@@ -111,13 +111,13 @@ export async function submitWithdrawalRequest(
       <p><strong>Method:</strong> ${method}</p>
       <p><strong>Amount:</strong> $${amount}</p>
       <p><strong>Payout details (where to send):</strong> ${payoutDetails.trim()}</p>
-      <p><a href="${appUrl}/admin/notifications">View and approve/decline</a></p>
+      <p><a href="${appUrl}/admin/notifications">Review request</a></p>
     `;
     await sendAdminEmail(subject, html, adminEmail);
   }
 
   return {
     ok: true,
-    message: "Request sent to admin. You will be notified once it is processed.",
+    message: "Request submitted. You will be notified once it is processed.",
   };
 }

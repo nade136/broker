@@ -337,7 +337,7 @@ function PlanFormFields({
           className="w-full rounded-lg border border-gray-200 px-3 py-2 text-xs dark:border-gray-700 dark:bg-slate-800 dark:text-gray-100"
         />
         <p className="mt-0.5 text-[10px] text-gray-500 dark:text-gray-400">
-          Amount user must deposit for this plan. Shown on Deposit page; credited when admin accepts proof.
+          Amount user must deposit for this plan. Shown on Deposit page; credited when deposit proof is accepted.
         </p>
       </div>
       <div className="flex items-center gap-2 sm:col-span-2">

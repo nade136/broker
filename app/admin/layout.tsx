@@ -38,7 +38,7 @@ function Sidebar({
             B
           </div>
           <span className="text-base font-semibold text-[#141d22] dark:text-gray-100">
-            Bridgecore Admin
+            Bridgecore Control
           </span>
         </Link>
         {onNavigate && (
@@ -144,7 +144,7 @@ export default function AdminLayout({
             </button>
             <div className="min-w-0 flex-1">
               <span className="block truncate text-xs text-gray-500 dark:text-gray-400">
-                Admin
+                Control
               </span>
               <span className="block truncate text-sm font-semibold text-[#141d22] dark:text-gray-100">
                 Control user dashboard

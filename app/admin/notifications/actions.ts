@@ -127,7 +127,7 @@ export async function acceptDeposit(notificationId: string) {
     ? `Deposit for ${planTitle}: $${amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}`
     : amount > 0
       ? `Deposit: $${amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}`
-      : "Deposit approved by admin";
+      : "Deposit approved";
 
   const { data: row } = await supabase
     .from("account_balances")

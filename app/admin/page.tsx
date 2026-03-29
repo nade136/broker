@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Admin Overview",
+  title: "Overview",
 };
 
 const cards = [
@@ -17,7 +17,7 @@ export default function AdminDashboardPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-lg font-semibold text-[#141d22] dark:text-gray-100">
-          Admin overview
+          Overview
         </h1>
         <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
           Control and monitor the user dashboard and platform data.

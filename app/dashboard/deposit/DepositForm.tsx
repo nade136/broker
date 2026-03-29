@@ -185,7 +185,7 @@ export default function DepositForm() {
                 Deposit amount: <strong>${planDepositAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}</strong>. Pay this amount, then upload proof below.
               </span>
             )}
-            {planDepositAmount <= 0 && <span className="mt-1 block">Upload proof below and admin will confirm.</span>}
+            {planDepositAmount <= 0 && <span className="mt-1 block">Upload proof below; we will confirm once reviewed.</span>}
           </p>
         </div>
       )}
@@ -206,7 +206,7 @@ export default function DepositForm() {
             <div>
               <div className="font-semibold text-[#141d22] dark:text-gray-100">Deposit</div>
               <div className="mt-1 text-[11px] text-gray-500 dark:text-gray-400">
-                Upload proof after payment. Admin will confirm.
+                Upload proof after payment. We will confirm once reviewed.
               </div>
             </div>
             <span className="text-lg text-gray-400">→</span>
@@ -219,7 +219,7 @@ export default function DepositForm() {
           </h2>
           {wallets.length === 0 && otherOptions.bank.length === 0 && otherOptions.paypal.length === 0 && otherOptions.cashapp.length === 0 ? (
             <p className="mb-6 text-xs text-gray-500 dark:text-gray-400">
-              Payment options are set by the admin for your account. None have been added yet. Ask the admin to add wallet addresses or bank/PayPal/CashApp options in Admin → Users → your account → Payment & withdrawal, then you will see them here.
+              Payment options for your account are set by our team. None have been added yet. Contact support so wallet addresses or bank/PayPal/CashApp options can be added to your account, then you will see them here.
             </p>
           ) : (
             <div className="mb-6 space-y-3 text-xs">
@@ -335,8 +335,8 @@ export default function DepositForm() {
             {status === "uploading"
               ? "Uploading…"
               : status === "sending"
-                ? "Sending to admin…"
-                : "Send to admin"}
+                ? "Submitting…"
+                : "Submit proof"}
           </button>
           {message && (
             <p

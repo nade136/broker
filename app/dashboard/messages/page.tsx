@@ -92,7 +92,7 @@ export default function MessagesPage() {
       <div>
         <h1 className="text-xl font-semibold text-[#141d22] dark:text-gray-100">Messages</h1>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Chat with support. Admin can reply from your user page.
+          Chat with support. The team can reply from your account page.
         </p>
       </div>
 
@@ -105,7 +105,7 @@ export default function MessagesPage() {
       <div className="rounded-2xl bg-white p-5 shadow-sm dark:bg-slate-900">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            Your conversation with support. Only you and the admin can see these messages.
+            Your conversation with support. Only you and our team can see these messages.
           </p>
           {messages.length > 0 && (
             <button

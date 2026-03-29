@@ -102,13 +102,13 @@ export async function submitDepositProof(
       <p>Payment method: ${paymentMethod}</p>
       <p>Amount: ${amount || "—"}</p>
       <p><a href="${screenshotPath}">View payment screenshot</a></p>
-      <p><a href="${appUrl}/admin/notifications">View all notifications</a></p>
+      <p><a href="${appUrl}/admin/notifications">Open notifications</a></p>
     `;
     await sendAdminEmail(subject, html, adminEmail);
   }
 
   return {
     ok: true,
-    message: "Proof sent to admin. You will be notified once it is reviewed.",
+    message: "Proof submitted. You will be notified once it is reviewed.",
   };
 }

@@ -20,7 +20,7 @@ export default function LoginForm({
   const [info, setInfo] = useState(
     () =>
       registrationHint === "pending"
-        ? "Your account is pending administrator approval. You will receive an email when you can sign in."
+        ? "Your account is pending approval. You will receive an email when you can sign in."
         : "",
   );
   const [loading, setLoading] = useState(false);
@@ -70,7 +70,7 @@ export default function LoginForm({
       if (profile?.account_status === "rejected") {
         setError("Your registration was not approved. Contact support if you need help.");
       } else {
-        setError("Your account is pending administrator approval. You will receive an email when you can sign in.");
+        setError("Your account is pending approval. You will receive an email when you can sign in.");
       }
       setLoading(false);
       return;

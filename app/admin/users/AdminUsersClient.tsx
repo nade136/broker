@@ -92,7 +92,7 @@ export default function AdminUsersClient({
             Users
           </h1>
           <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-            Manage user accounts and admins. Make a user admin so they can access the admin dashboard.
+            Manage user accounts. Grant staff access so someone can sign in to the control dashboard.
           </p>
         </div>
         <div className="flex gap-2">
@@ -101,7 +101,7 @@ export default function AdminUsersClient({
             onClick={() => setAddAdminOpen(true)}
             className="rounded-lg bg-amber-500 px-4 py-2 text-xs font-semibold text-white hover:bg-amber-600"
           >
-            Add admin
+            Add staff
           </button>
           <input
             type="search"
@@ -158,7 +158,7 @@ export default function AdminUsersClient({
                           : "bg-gray-100 text-gray-600 dark:bg-slate-700 dark:text-gray-300"
                       }`}
                     >
-                      {p.role === "admin" ? "Admin" : "User"}
+                      {p.role === "admin" ? "Staff" : "User"}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
@@ -175,7 +175,7 @@ export default function AdminUsersClient({
                           onClick={() => setRole(p.id, "user")}
                           className="rounded-lg border border-amber-200 px-2 py-1 text-[11px] font-medium text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 dark:hover:bg-amber-900/20"
                         >
-                          Remove admin
+                          Remove staff
                         </button>
                       ) : (
                         <button
@@ -183,7 +183,7 @@ export default function AdminUsersClient({
                           onClick={() => setRole(p.id, "admin")}
                           className="rounded-lg border border-amber-200 px-2 py-1 text-[11px] font-medium text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 dark:hover:bg-amber-900/20"
                         >
-                          Make admin
+                          Grant staff
                         </button>
                       )}
                       {p.role !== "admin" && (
@@ -205,8 +205,7 @@ export default function AdminUsersClient({
         </div>
         {profiles.length === 0 && (
           <p className="px-4 py-6 text-center text-xs text-gray-500 dark:text-gray-400">
-            No users yet. Users appear here when they sign up. Add an admin with the button
-            above.
+            No users yet. Users appear here when they sign up. Add staff with the button above.
           </p>
         )}
       </div>
@@ -215,10 +214,10 @@ export default function AdminUsersClient({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-sm rounded-2xl bg-white p-5 shadow-xl dark:bg-slate-900">
             <h3 className="text-base font-semibold text-[#141d22] dark:text-gray-100">
-              Add new admin
+              Add staff account
             </h3>
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              Create a new user and give them admin access. They can sign in at /admin/login.
+              Create a new user with staff access. They can sign in from the staff sign-in page.
             </p>
             <form onSubmit={handleAddAdmin} className="mt-4 space-y-3">
               {addAdminError && (
@@ -236,7 +235,7 @@ export default function AdminUsersClient({
                   value={addAdminEmail}
                   onChange={(e) => setAddAdminEmail(e.target.value)}
                   className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-800 dark:text-gray-100"
-                  placeholder="admin@example.com"
+                  placeholder="staff@example.com"
                 />
               </div>
               <div>
@@ -268,7 +267,7 @@ export default function AdminUsersClient({
                   disabled={addAdminSubmitting}
                   className="flex-1 rounded-lg bg-amber-500 py-2 text-xs font-semibold text-white hover:bg-amber-600 disabled:opacity-70"
                 >
-                  {addAdminSubmitting ? "Creating…" : "Create admin"}
+                  {addAdminSubmitting ? "Creating…" : "Create staff account"}
                 </button>
               </div>
             </form>
@@ -284,7 +283,7 @@ export default function AdminUsersClient({
             </h3>
             <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
               This permanently deletes their login and profile from the database (and related records
-              tied to their account). Admin accounts cannot be removed here.
+              tied to their account). Staff accounts cannot be removed here.
             </p>
             <div className="mt-6 flex gap-3">
               <button

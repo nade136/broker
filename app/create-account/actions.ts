@@ -55,7 +55,7 @@ export async function notifyAdminNewUserSignup(
     return {
       ok: false,
       reason:
-        "No admin inbox configured. Set ADMIN_EMAIL in .env or ensure at least one profile has role admin with an email.",
+        "No team notification email configured. Set ADMIN_EMAIL in your environment or ensure a staff profile has an email.",
     };
   }
 
@@ -66,7 +66,7 @@ export async function notifyAdminNewUserSignup(
     <p><strong>New user signed up</strong></p>
     <p>Name: ${safeName}</p>
     <p>Email: ${trimmed.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
-    <p>Approve or decline in <a href="${appUrl}/admin/notifications">Admin notifications</a>.</p>
+    <p>Approve or decline in <a href="${appUrl}/admin/notifications">Notifications</a>.</p>
   `;
   const sent = await sendTransactionalEmail(to, subject, html);
   if (!sent.ok) {

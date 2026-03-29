@@ -163,7 +163,7 @@ export default function WithdrawForm() {
           {selectedMethod && (
             <form onSubmit={handleSubmit} className="space-y-4 border-t border-gray-100 pt-6 dark:border-gray-800">
               <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                Enter where you want to receive the funds. Admin will see this and approve or decline your request.
+                Enter where you want to receive the funds. Our team will review and approve or decline your request.
               </p>
               {payoutLabel && (
                 <div>

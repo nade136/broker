@@ -10,7 +10,7 @@ export default function WithdrawPage() {
     <div className="space-y-6">
       <WithdrawForm />
       <p className="text-[11px] text-gray-500 dark:text-gray-400">
-        Your request will be sent to the admin and appear in their Notifications. You will be notified once it is processed.
+        Your request will be sent to our team for review. You will be notified once it is processed.
       </p>
     </div>
   );

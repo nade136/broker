@@ -55,11 +55,8 @@ export default function AdminLoginForm() {
     }
     if (!profile || profile.role !== "admin") {
       await supabase.auth.signOut();
-      const uid = authData.user.id;
       setError(
-        "This account is not an admin. To make this user an admin, run in Supabase SQL Editor: update public.profiles set role = 'admin' where id = '" +
-          uid +
-          "';"
+        "This account does not have access to this sign-in page. If you should have access, ask the person who manages Bridgecore to grant staff privileges for your account in Supabase."
       );
       setLoading(false);
       return;
@@ -89,10 +86,10 @@ export default function AdminLoginForm() {
               </div>
               <div>
                 <h1 className="text-lg font-semibold text-[#141d22] dark:text-gray-100">
-                  Admin dashboard
+                  Staff sign-in
                 </h1>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                  Sign in to access the admin dashboard.
+                  Sign in to access the control dashboard.
                 </p>
               </div>
             </div>
@@ -104,25 +101,25 @@ export default function AdminLoginForm() {
                 </p>
               )}
               <div>
-                <label htmlFor="admin-email" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                  Admin email
+                <label htmlFor="staff-email" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                  Email
                 </label>
                 <input
-                  id="admin-email"
+                  id="staff-email"
                   name="email"
                   type="email"
                   required
                   autoComplete="email"
                   className="mt-2 block w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-[#141d22] placeholder-gray-400 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 dark:border-gray-700 dark:bg-slate-950 dark:text-gray-100"
-                  placeholder="admin@bitrexify.com"
+                  placeholder="you@bridgecore.live"
                 />
               </div>
               <div>
-                <label htmlFor="admin-password" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                <label htmlFor="staff-password" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
                   Password
                 </label>
                 <input
-                  id="admin-password"
+                  id="staff-password"
                   name="password"
                   type="password"
                   required
@@ -152,7 +149,7 @@ export default function AdminLoginForm() {
                 disabled={loading}
                 className="mt-2 w-full rounded-full bg-[#141d22] py-3 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.01] hover:bg-black disabled:opacity-70 dark:bg-amber-500 dark:hover:bg-amber-600"
               >
-                {loading ? "Signing in…" : "Sign in to admin"}
+                {loading ? "Signing in…" : "Sign in"}
               </button>
             </form>
           </div>
