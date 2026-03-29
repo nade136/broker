@@ -4,15 +4,15 @@ import { ThemeProvider } from "./components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: {
-    default: "Web",
-    template: "%s | Web",
+    default: "Bridgecore",
+    template: "%s | Bridgecore",
   },
   description:
-    "Web – modern trading dashboard experience.",
+    "Bridgecore – modern trading dashboard experience.",
   openGraph: {
     type: "website",
     locale: "en",
-    siteName: "Web",
+    siteName: "Bridgecore",
   },
   robots: { index: true, follow: true },
 };

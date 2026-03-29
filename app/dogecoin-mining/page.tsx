@@ -3,7 +3,7 @@ import PlaceholderPage from "../components/PlaceholderPage";
 
 export const metadata: Metadata = {
   title: "Dogecoin Mining",
-  description: "Dogecoin mining with Web.",
+  description: "Dogecoin mining with Bridgecore.",
 };
 
 export default function Page() {

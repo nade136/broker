@@ -1,11 +1,13 @@
 "use client";
 
+import { formatDateTimeUtc } from "@/lib/format-date";
 import {
   markNotificationRead,
   acceptDeposit,
   rejectDepositNotification,
   acceptWithdrawal,
   rejectWithdrawalNotification,
+  submitNewSignupDecision,
   deleteNotification,
 } from "./actions";
 
@@ -57,7 +59,7 @@ export default function NotificationList({
                     {TYPE_LABELS[n.type] ?? n.type}
                   </span>
                   <span className="text-[11px] text-gray-500 dark:text-gray-400">
-                    {new Date(n.created_at).toLocaleString()}
+                    {formatDateTimeUtc(n.created_at)}
                   </span>
                 </div>
                 <h3 className="mt-1 font-semibold text-[#141d22] dark:text-gray-100">
@@ -162,6 +164,48 @@ export default function NotificationList({
                           </button>
                         </form>
                       </>
+                    )}
+                    {n.type === "new_signup" && (
+                      <form
+                        action={submitNewSignupDecision}
+                        className="flex w-full max-w-sm flex-col gap-2 sm:items-end"
+                      >
+                        <input type="hidden" name="notificationId" value={n.id} />
+                        <div className="w-full">
+                          <label
+                            htmlFor={`signup-email-msg-${n.id}`}
+                            className="mb-1 block text-[11px] font-medium text-gray-600 dark:text-gray-400"
+                          >
+                            Message to user (optional, sent by email)
+                          </label>
+                          <textarea
+                            id={`signup-email-msg-${n.id}`}
+                            name="emailMessage"
+                            rows={3}
+                            maxLength={2000}
+                            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-[#141d22] placeholder-gray-400 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-500"
+                            placeholder="Add a note included in the approval or decline email…"
+                          />
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="submit"
+                            name="decision"
+                            value="accept"
+                            className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700"
+                          >
+                            Accept
+                          </button>
+                          <button
+                            type="submit"
+                            name="decision"
+                            value="reject"
+                            className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700"
+                          >
+                            Decline
+                          </button>
+                        </div>
+                      </form>
                     )}
                     <form action={markNotificationRead.bind(null, n.id)} className="inline">
                       <button

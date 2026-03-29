@@ -5,7 +5,7 @@ import AnimateIn from "../components/AnimateIn";
 
 export const metadata: Metadata = {
   title: "Cookie Policy",
-  description: "How Web uses cookies and similar technologies.",
+  description: "How Bridgecore uses cookies and similar technologies.",
 };
 
 export default function CookiePolicyPage() {
@@ -18,7 +18,7 @@ export default function CookiePolicyPage() {
           <p className="mt-4 text-gray-500">Last updated: 2026</p>
           <div className="mt-8 space-y-6 text-gray-600 leading-relaxed">
             <p>
-              Web uses cookies and similar technologies to improve your experience, maintain security, and analyze site usage.
+              Bridgecore uses cookies and similar technologies to improve your experience, maintain security, and analyze site usage.
             </p>
             <p>
               We use essential cookies for login and security, functional cookies for preferences, and analytics cookies to understand how our site is used. You can manage cookie preferences in your browser settings.

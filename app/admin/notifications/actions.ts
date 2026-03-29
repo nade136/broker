@@ -1,7 +1,49 @@
 "use server";
 
 import { createSupabaseAdmin } from "@/lib/supabase/server";
+import { describeSendEmailResult, sendTransactionalEmail } from "@/lib/email/resend";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+
+const MAX_SIGNUP_EMAIL_NOTE = 2000;
+
+function escapeHtmlForEmail(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function formatEmailNote(note: string): string {
+  const trimmed = note.trim().slice(0, MAX_SIGNUP_EMAIL_NOTE);
+  if (!trimmed) return "";
+  return `<p style="margin-top:12px;padding-top:12px;border-top:1px solid #e5e7eb;"><strong>Message from the team:</strong><br/><br/>${escapeHtmlForEmail(trimmed).replace(/\r\n|\n|\r/g, "<br/>")}</p>`;
+}
+
+/** Form action: hidden notificationId, textarea emailMessage, submit decision=accept|reject */
+export async function submitNewSignupDecision(formData: FormData) {
+  const notificationId = String(formData.get("notificationId") ?? "").trim();
+  const decision = String(formData.get("decision") ?? "").trim();
+  const emailMessage = String(formData.get("emailMessage") ?? "")
+    .trim()
+    .slice(0, MAX_SIGNUP_EMAIL_NOTE);
+  let flash = "Something went wrong.";
+  try {
+    if (!notificationId) {
+      flash = "Missing notification.";
+    } else if (decision === "accept") {
+      flash = await acceptNewSignup(notificationId, emailMessage);
+    } else if (decision === "reject") {
+      flash = await rejectNewSignup(notificationId, emailMessage);
+    } else {
+      flash = "Choose Accept or Decline.";
+    }
+  } catch (e) {
+    flash = e instanceof Error ? e.message : "Request failed.";
+  }
+  redirect(`/admin/notifications?flash=${encodeURIComponent(flash)}`);
+}
 
 export type NotificationType =
   | "new_signup"
@@ -211,4 +253,113 @@ export async function rejectWithdrawal(notificationId: string) {
 /** For use as form action. */
 export async function rejectWithdrawalNotification(id: string) {
   await rejectWithdrawal(id);
+}
+
+export async function acceptNewSignup(notificationId: string, emailNote = ""): Promise<string> {
+  const supabase = createSupabaseAdmin();
+  const { data: n } = await supabase
+    .from("notifications")
+    .select("id, type, user_id, read_at")
+    .eq("id", notificationId)
+    .single();
+  if (!n || n.type !== "new_signup" || n.read_at) {
+    throw new Error("Signup notification not found or already handled.");
+  }
+  const userId = n.user_id as string | null;
+  if (!userId) throw new Error("Missing user for this signup.");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("account_status, email, full_name")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (!profile || profile.account_status !== "pending_approval") {
+    await supabase.from("notifications").update({ read_at: new Date().toISOString() }).eq("id", notificationId);
+    revalidatePath("/admin/notifications");
+    return "Notification cleared (user missing or already processed).";
+  }
+
+  await supabase
+    .from("profiles")
+    .update({ account_status: "approved" })
+    .eq("id", userId);
+  await supabase.from("notifications").update({ read_at: new Date().toISOString() }).eq("id", notificationId);
+
+  const userEmail = profile.email as string;
+  const appUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  let emailLine = "No user email on file.";
+  if (userEmail) {
+    const name = (profile.full_name as string)?.trim() || userEmail;
+    const safeName = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const noteBlock = formatEmailNote(emailNote);
+    const sent = await sendTransactionalEmail(
+      userEmail,
+      "Your account has been approved",
+      `
+        <p>Hi ${safeName},</p>
+        <p>Your registration has been approved. You can <a href="${appUrl}/login">sign in here</a>.</p>
+        ${noteBlock}
+      `,
+    );
+    emailLine = describeSendEmailResult(sent);
+  }
+
+  revalidatePath("/admin/notifications");
+  return `Approved. ${emailLine}`;
+}
+
+/** Decline: notify by email (if possible), then delete auth user so the email can register again. */
+export async function rejectNewSignup(notificationId: string, emailNote = ""): Promise<string> {
+  const supabase = createSupabaseAdmin();
+  const { data: n } = await supabase
+    .from("notifications")
+    .select("id, type, user_id, read_at")
+    .eq("id", notificationId)
+    .single();
+  if (!n || n.type !== "new_signup" || n.read_at) {
+    throw new Error("Signup notification not found or already handled.");
+  }
+  const userId = n.user_id as string | null;
+  if (!userId) throw new Error("Missing user for this signup.");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("account_status, email, full_name")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (!profile || profile.account_status !== "pending_approval") {
+    await supabase.from("notifications").update({ read_at: new Date().toISOString() }).eq("id", notificationId);
+    revalidatePath("/admin/notifications");
+    return "Notification cleared (user missing or already processed).";
+  }
+
+  const userEmail = profile.email as string;
+  let emailLine = "No user email on file.";
+  if (userEmail) {
+    const name = (profile.full_name as string)?.trim() || userEmail;
+    const safeName = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const noteBlock = formatEmailNote(emailNote);
+    const sent = await sendTransactionalEmail(
+      userEmail,
+      "Update on your registration",
+      `
+        <p>Hi ${safeName},</p>
+        <p>We are unable to approve your registration at this time. You may create a new account again with the same email if you wish. If you have questions, please contact support.</p>
+        ${noteBlock}
+      `,
+    );
+    emailLine = describeSendEmailResult(sent);
+  }
+
+  const { error: delErr } = await supabase.auth.admin.deleteUser(userId);
+  if (delErr) {
+    throw new Error(`Could not remove user account: ${delErr.message}`);
+  }
+
+  await supabase.from("notifications").update({ read_at: new Date().toISOString() }).eq("id", notificationId);
+
+  revalidatePath("/admin/notifications");
+  return `Declined. User account removed from the system so they can register again. ${emailLine}`;
 }

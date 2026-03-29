@@ -9,7 +9,7 @@ const UNSPLASH = "https://images.unsplash.com";
 const slides = [
   { title: "Best spreads on gold, oil, and BTC", tag: "Product", href: "#", image: `${UNSPLASH}/photo-1611974789855-9c2a0a7236a3?w=800&q=80` },
   { title: "Nature vs. nurture: Born to trade or trained to trade?", tag: "Community", href: "#", image: `${UNSPLASH}/photo-1642790106117-e829e14a795f?w=800&q=80` },
-  { title: "An easy guide to unlocking extra income with the Web Affiliate Program", tag: "Community", href: "#", image: `${UNSPLASH}/photo-1552664730-d307ca884978?w=800&q=80` },
+  { title: "An easy guide to unlocking extra income with the Bridgecore Affiliate Program", tag: "Community", href: "#", image: `${UNSPLASH}/photo-1552664730-d307ca884978?w=800&q=80` },
   { title: "Review guide: how to know your broker is trusted and also good", tag: "Integrity", href: "#", image: `${UNSPLASH}/photo-1639762681485-074b7f938ba0?w=800&q=80` },
 ];
 

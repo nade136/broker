@@ -6,9 +6,10 @@
     </linearGradient>
   </defs>
   <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#g)"/>
+  <!-- B glyph (same geometry as homepage watermark), scaled to fit -->
   <path
-    d="M18 44l6.5-24h5.5L36 36l6-16h5.5L54 44h-6l-3.5-13-5.5 13h-5L26 31 22 44z"
     fill="#0b1120"
+    transform="translate(15, 9) scale(0.58)"
+    d="M12 8L12 56C12 56 40 56 40 44C40 32 12 32 12 32C12 32 40 32 40 20C40 8 12 8 12 8Z"
   />
 </svg>
-

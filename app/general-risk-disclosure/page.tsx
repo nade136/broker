@@ -5,7 +5,7 @@ import AnimateIn from "../components/AnimateIn";
 
 export const metadata: Metadata = {
   title: "General Risk Disclosure",
-  description: "Important risk information for trading and investing with Web.",
+  description: "Important risk information for trading and investing with Bridgecore.",
 };
 
 export default function GeneralRiskDisclosurePage() {
@@ -21,7 +21,7 @@ export default function GeneralRiskDisclosurePage() {
               Trading leveraged financial instruments such as forex, CFDs, and digital assets carries a high level of risk and may not be suitable for all investors.
             </p>
             <p>
-              You could lose all your invested capital. Past performance is not indicative of future results. Ensure you fully understand the risks and seek independent advice if necessary. Web is not liable for any losses or damages arising directly or indirectly from trading activity based on information provided on this platform.
+              You could lose all your invested capital. Past performance is not indicative of future results. Ensure you fully understand the risks and seek independent advice if necessary. Bridgecore is not liable for any losses or damages arising directly or indirectly from trading activity based on information provided on this platform.
             </p>
             <p>
               For the complete risk disclosure, contact support@bitrexify.com or refer to the document provided at account opening.

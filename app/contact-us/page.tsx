@@ -8,7 +8,7 @@ import AnimateIn from "../components/AnimateIn";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Get in touch with Web. We're here to help with questions, feedback, or business inquiries. Quick and efficient support.",
+    "Get in touch with Bridgecore. We're here to help with questions, feedback, or business inquiries. Quick and efficient support.",
 };
 
 export default function ContactUsPage() {
@@ -23,7 +23,7 @@ export default function ContactUsPage() {
               We&apos;re Here to Help - Get in Touch Anytime
             </h1>
             <p className="mt-6 text-lg text-gray-600">
-              At Web, we value your time and are committed to providing quick and efficient support. Whether you have questions, feedback, or business inquiries, our team is ready to assist you.
+              At Bridgecore, we value your time and are committed to providing quick and efficient support. Whether you have questions, feedback, or business inquiries, our team is ready to assist you.
             </p>
           </div>
         </section>

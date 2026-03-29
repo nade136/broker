@@ -34,11 +34,11 @@ function Sidebar({
     >
       <div className="mb-6 flex items-center justify-between gap-2 px-1">
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-amber-600 text-white">
-            W
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-amber-600 text-sm font-semibold text-white">
+            B
           </div>
           <span className="text-base font-semibold text-[#141d22] dark:text-gray-100">
-            Web Admin
+            Bridgecore Admin
           </span>
         </Link>
         {onNavigate && (

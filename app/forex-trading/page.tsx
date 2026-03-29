@@ -3,7 +3,7 @@ import PlaceholderPage from "../components/PlaceholderPage";
 
 export const metadata: Metadata = {
   title: "Forex Trading",
-  description: "Trade forex with Web. Major, minor, and exotic pairs with tight spreads and fast execution.",
+  description: "Trade forex with Bridgecore. Major, minor, and exotic pairs with tight spreads and fast execution.",
 };
 
 export default function Page() {

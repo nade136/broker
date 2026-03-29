@@ -3,7 +3,7 @@ import PlaceholderPage from "../components/PlaceholderPage";
 
 export const metadata: Metadata = {
   title: "Stocks Trading",
-  description: "Trade global stocks with Web. Apple, Tesla, NVIDIA and more.",
+  description: "Trade global stocks with Bridgecore. Apple, Tesla, NVIDIA and more.",
 };
 
 export default function Page() {

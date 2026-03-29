@@ -20,11 +20,11 @@ function Sidebar() {
   return (
     <aside className="flex h-screen w-64 flex-col border-r border-gray-200 bg-white/90 px-4 py-6 text-sm shadow-sm dark:border-gray-800 dark:bg-[#050816]">
       <div className="mb-6 flex items-center gap-2 px-1">
-        <div className="flex h-8 w-8 items-center justify-center rounded-md bg-black text-white dark:bg-white dark:text-black">
-          W
+        <div className="flex h-8 w-8 items-center justify-center rounded-md bg-black text-sm font-semibold text-white dark:bg-white dark:text-black">
+          B
         </div>
         <span className="text-base font-semibold text-[#141d22] dark:text-gray-100">
-          Web
+          Bridgecore
         </span>
       </div>
 

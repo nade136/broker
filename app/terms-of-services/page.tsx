@@ -5,7 +5,7 @@ import AnimateIn from "../components/AnimateIn";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "Web terms of service and conditions of use.",
+  description: "Bridgecore terms of service and conditions of use.",
 };
 
 export default function TermsOfServicePage() {
@@ -18,7 +18,7 @@ export default function TermsOfServicePage() {
           <p className="mt-4 text-gray-500">Last updated: 2026</p>
           <div className="mt-8 space-y-6 text-gray-600 leading-relaxed">
             <p>
-              By accessing or using Web services, you agree to be bound by these Terms of Service. Please read them carefully.
+              By accessing or using Bridgecore services, you agree to be bound by these Terms of Service. Please read them carefully.
             </p>
             <p>
               These terms govern your use of our trading, mining, and investment platform. You must be of legal age in your jurisdiction to use our services. We reserve the right to update these terms; continued use after changes constitutes acceptance.

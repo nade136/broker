@@ -3,7 +3,7 @@ import AdminLoginForm from "./AdminLoginForm";
 
 export const metadata: Metadata = {
   title: "Admin Login",
-  description: "Sign in to the Web admin dashboard.",
+  description: "Sign in to the Bridgecore admin dashboard.",
 };
 
 export default function AdminLoginPage() {

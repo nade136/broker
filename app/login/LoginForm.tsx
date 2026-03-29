@@ -5,9 +5,24 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 
-export default function LoginForm() {
+export default function LoginForm({
+  registrationHint,
+}: {
+  registrationHint?: "pending" | "rejected";
+}) {
   const router = useRouter();
-  const [error, setError] = useState("");
+  const [error, setError] = useState(
+    () =>
+      registrationHint === "rejected"
+        ? "Your registration was not approved. Contact support if you need help."
+        : "",
+  );
+  const [info, setInfo] = useState(
+    () =>
+      registrationHint === "pending"
+        ? "Your account is pending administrator approval. You will receive an email when you can sign in."
+        : "",
+  );
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -18,6 +33,7 @@ export default function LoginForm() {
     const email = (form.elements.namedItem("email") as HTMLInputElement).value.trim();
     const password = (form.elements.namedItem("password") as HTMLInputElement).value;
 
+    setInfo("");
     if (!email || !password) {
       setError("Enter email and password.");
       setLoading(false);
@@ -39,6 +55,27 @@ export default function LoginForm() {
       return;
     }
 
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("account_status, role")
+      .eq("id", data.user.id)
+      .maybeSingle();
+
+    const allowed =
+      profile?.role === "admin" || profile?.account_status === "approved";
+
+    if (!allowed) {
+      await supabase.auth.signOut();
+      document.cookie = "user_session=; path=/; max-age=0";
+      if (profile?.account_status === "rejected") {
+        setError("Your registration was not approved. Contact support if you need help.");
+      } else {
+        setError("Your account is pending administrator approval. You will receive an email when you can sign in.");
+      }
+      setLoading(false);
+      return;
+    }
+
     document.cookie = `user_session=1; path=/; max-age=${60 * 60 * 24 * 7}`;
     router.push("/dashboard");
     router.refresh();
@@ -54,6 +91,9 @@ export default function LoginForm() {
       <form onSubmit={handleSubmit} className="mt-8 space-y-6">
         {error && (
           <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+        )}
+        {info && !error && (
+          <p className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-700">{info}</p>
         )}
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-[#141d22]">

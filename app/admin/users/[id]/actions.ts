@@ -94,7 +94,7 @@ export async function sendAdminMessage(userId: string, body: string): Promise<vo
     const safePreview = preview.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/&/g, "&amp;");
     await sendEmail(
       email,
-      "You have a new message from Web support",
+      "You have a new message from Bridgecore support",
       `<p>Support sent you a message:</p><p style="white-space: pre-wrap; background: #f5f5f5; padding: 12px; border-radius: 8px;">${safePreview}</p><p><a href="${messagesUrl}">View and reply in Messages</a></p>`
     );
   }

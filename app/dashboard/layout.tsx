@@ -33,11 +33,11 @@ function Sidebar({
     >
       <div className="mb-6 flex items-center justify-between gap-2 px-1">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-black text-white dark:bg-white dark:text-black">
-            W
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-black text-sm font-semibold text-white dark:bg-white dark:text-black">
+            B
           </div>
           <span className="text-base font-semibold text-[#141d22] dark:text-gray-100">
-            Web
+            Bridgecore
           </span>
         </div>
         {onNavigate && (
@@ -142,7 +142,22 @@ export default function DashboardLayout({
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setUserEmail(user.email ?? "");
-        const { data: profile } = await supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle();
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("full_name, account_status, role")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        const canUseDashboard =
+          profile?.role === "admin" || profile?.account_status === "approved";
+        if (!canUseDashboard) {
+          await supabase.auth.signOut();
+          document.cookie = "user_session=; path=/; max-age=0";
+          window.location.href =
+            profile?.account_status === "rejected" ? "/login?registration=rejected" : "/login?registration=pending";
+          return;
+        }
+
         const name = profile?.full_name?.trim() || (user.user_metadata?.full_name ?? user.user_metadata?.name ?? "").trim() || "User";
         setUserName(name);
         const { data: kyc } = await supabase.from("kyc_submissions").select("status").eq("user_id", user.id).maybeSingle();

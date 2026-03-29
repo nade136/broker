@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase/client";
+import { notifyAdminNewUserSignup } from "./actions";
 
 export default function CreateAccountForm() {
-  const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -39,12 +38,20 @@ export default function CreateAccountForm() {
       setLoading(false);
       return;
     }
+
+    await notifyAdminNewUserSignup(email, fullName, data.user?.id ?? null);
+
     if (data.user && data.session) {
-      document.cookie = `user_session=1; path=/; max-age=${60 * 60 * 24 * 7}`;
-      router.push("/dashboard");
-      router.refresh();
+      await supabase.auth.signOut();
+      document.cookie = "user_session=; path=/; max-age=0";
+    }
+
+    const pendingMsg =
+      "Your account was created. An administrator must approve it before you can sign in. You will receive an email when your access is ready.";
+    if (data.user && !data.session) {
+      setMessage(`${pendingMsg} If required, check your email to confirm your address, then wait for approval.`);
     } else {
-      setMessage("Check your email to confirm your account, then log in.");
+      setMessage(pendingMsg);
     }
     setLoading(false);
   };

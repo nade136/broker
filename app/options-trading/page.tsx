@@ -3,7 +3,7 @@ import PlaceholderPage from "../components/PlaceholderPage";
 
 export const metadata: Metadata = {
   title: "Options Trading",
-  description: "Trade options on major assets with Web.",
+  description: "Trade options on major assets with Bridgecore.",
 };
 
 export default function Page() {

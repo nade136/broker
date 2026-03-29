@@ -48,13 +48,13 @@ export default function Footer() {
       <section className="border-t border-gray-200 bg-white px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-4 text-xs text-gray-500">
           <p>
-            Web Ltd is a registered financial technology company operating under the Web brand. We specialize in providing online trading services and digital financial solutions globally. Web Ltd is incorporated under the laws of Saint Vincent and the Grenadines with registration number 1313809. Our registered office is located in Sydney, Australia.
+            Bridgecore Ltd is a registered financial technology company operating under the Bridgecore brand. We specialize in providing online trading services and digital financial solutions globally. Bridgecore Ltd is incorporated under the laws of Saint Vincent and the Grenadines with registration number 1313809. Our registered office is located in Sydney, Australia.
           </p>
           <p>
-            Web (Global) Ltd is a subsidiary entity operating in compliance with international financial standards and may be authorized or regulated in selected jurisdictions depending on the nature of its operations. We are committed to transparency, client protection, and ethical trading practices.
+            Bridgecore (Global) Ltd is a subsidiary entity operating in compliance with international financial standards and may be authorized or regulated in selected jurisdictions depending on the nature of its operations. We are committed to transparency, client protection, and ethical trading practices.
           </p>
           <p className="font-medium">
-            Risk Warning: Trading leveraged financial instruments such as forex, CFDs, and digital assets carries a high level of risk and may not be suitable for all investors. You could lose all your invested capital. Ensure you fully understand the risks and seek independent advice if necessary. Web is not liable for any losses or damages arising directly or indirectly from trading activity based on information provided on this platform.
+            Risk Warning: Trading leveraged financial instruments such as forex, CFDs, and digital assets carries a high level of risk and may not be suitable for all investors. You could lose all your invested capital. Ensure you fully understand the risks and seek independent advice if necessary. Bridgecore is not liable for any losses or damages arising directly or indirectly from trading activity based on information provided on this platform.
           </p>
           <p>
             Our services are not intended for or directed at residents of certain jurisdictions, including but not limited to Australia, Canada, the United Kingdom, European Union countries, North Korea, Iran, and any jurisdictions where such services would be contrary to local laws or regulations.
@@ -63,18 +63,21 @@ export default function Footer() {
             The content of this website is for informational purposes only and does not constitute investment advice, a recommendation, or an offer to buy or sell any financial instrument. By accessing this website, you agree that your use of its services is entirely at your own risk.
           </p>
           <p>
-            All information, graphics, and content on this site are the property of Web and may not be copied, reproduced, or distributed without written consent.
+            All information, graphics, and content on this site are the property of Bridgecore and may not be copied, reproduced, or distributed without written consent.
           </p>
           <p>
-            Web complies with global data security standards, including the Payment Card Industry Data Security Standard (PCI DSS), to protect your information. Regular security audits and penetration tests are performed to ensure the safety of user data.
+            Bridgecore complies with global data security standards, including the Payment Card Industry Data Security Standard (PCI DSS), to protect your information. Regular security audits and penetration tests are performed to ensure the safety of user data.
           </p>
         </div>
       </section>
       <footer className="border-t border-gray-200 bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-start lg:justify-between">
-            <Link href="/" className="text-xl font-bold text-[#141d22]">
-              Web
+            <Link href="/" className="flex items-center gap-2 text-xl font-bold text-[#141d22]">
+              <span className="flex h-8 w-8 items-center justify-center rounded-md bg-black text-sm font-bold text-white">
+                B
+              </span>
+              Bridgecore
             </Link>
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-5">
               <div>
@@ -156,7 +159,7 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-            <p className="text-sm text-gray-500">Copyright © 2026 | Web.com</p>
+            <p className="text-sm text-gray-500">Copyright © 2026 | bridgecore.live</p>
           </div>
         </div>
       </footer>

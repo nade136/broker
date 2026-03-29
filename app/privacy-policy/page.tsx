@@ -5,7 +5,7 @@ import AnimateIn from "../components/AnimateIn";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "How Web collects, uses, and protects your personal information.",
+  description: "How Bridgecore collects, uses, and protects your personal information.",
 };
 
 export default function PrivacyPolicyPage() {
@@ -18,7 +18,7 @@ export default function PrivacyPolicyPage() {
           <p className="mt-4 text-gray-500">Last updated: 2026</p>
           <div className="mt-8 space-y-6 text-gray-600 leading-relaxed">
             <p>
-              Web is committed to protecting your privacy. This policy describes how we collect, use, store, and safeguard your personal information when you use our platform.
+              Bridgecore is committed to protecting your privacy. This policy describes how we collect, use, store, and safeguard your personal information when you use our platform.
             </p>
             <p>
               We collect information you provide (e.g. name, email, account details), usage data, and technical data necessary for security and service improvement. We do not sell your personal data to third parties. We may share data with regulators or service providers as required by law or to operate our services.

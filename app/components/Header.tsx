@@ -78,7 +78,10 @@ export default function Header() {
     <header className="sticky top-0 z-40 w-full border-b border-gray-100 bg-white">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold text-[#141d22]">Web</span>
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-black text-sm font-bold text-white dark:bg-[#141d22] dark:text-white">
+            B
+          </div>
+          <span className="text-xl font-bold text-[#141d22]">Bridgecore</span>
         </Link>
 
         <div className="hidden md:flex md:items-center md:gap-1">

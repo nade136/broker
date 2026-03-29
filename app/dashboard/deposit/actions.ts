@@ -4,14 +4,17 @@ import { createSupabaseAdmin } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
 async function getAdminEmail(): Promise<string | null> {
+  const envAdmin = process.env.ADMIN_EMAIL?.trim();
+  if (envAdmin) return envAdmin;
   const admin = createSupabaseAdmin();
   const { data } = await admin
     .from("profiles")
     .select("email")
     .eq("role", "admin")
+    .order("created_at", { ascending: true })
     .limit(1)
-    .single();
-  return data?.email ?? process.env.ADMIN_EMAIL ?? null;
+    .maybeSingle();
+  return data?.email?.trim() ?? null;
 }
 
 async function sendAdminEmail(

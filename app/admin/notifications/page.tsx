@@ -7,7 +7,12 @@ export const metadata: Metadata = {
   title: "Notifications",
 };
 
-export default async function AdminNotificationsPage() {
+type NotificationsPageProps = {
+  searchParams?: Promise<{ flash?: string }>;
+};
+
+export default async function AdminNotificationsPage({ searchParams }: NotificationsPageProps) {
+  const flash = searchParams ? (await searchParams).flash?.trim() : undefined;
   const supabase = createSupabaseAdmin();
   const { data: notifications } = await supabase
     .from("notifications")
@@ -44,7 +49,26 @@ export default async function AdminNotificationsPage() {
           </p>
         </div>
         <div className="flex shrink-0 flex-wrap gap-2">
-          {list.some((n) => !n.read_at) && (
+          {flash && (() => {
+        const lower = flash.toLowerCase();
+        const isError = lower.startsWith("error") || lower.includes("could not remove");
+        const emailMiss =
+          lower.includes("email not sent") ||
+          lower.includes("no user email") ||
+          lower.includes("no resend");
+        const className = isError
+          ? "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-300"
+          : emailMiss
+            ? "bg-amber-50 text-amber-900 dark:bg-amber-900/20 dark:text-amber-200"
+            : "bg-emerald-50 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-200";
+        return (
+          <p className={`rounded-lg px-3 py-2 text-xs ${className}`} role="status">
+            {flash}
+          </p>
+        );
+      })()}
+
+      {list.some((n) => !n.read_at) && (
             <form action={markAllNotificationsRead}>
               <button
                 type="submit"

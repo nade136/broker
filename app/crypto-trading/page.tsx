@@ -3,7 +3,7 @@ import PlaceholderPage from "../components/PlaceholderPage";
 
 export const metadata: Metadata = {
   title: "Crypto Trading",
-  description: "Trade Bitcoin, Ethereum, Litecoin and more with Web.",
+  description: "Trade Bitcoin, Ethereum, Litecoin and more with Bridgecore.",
 };
 
 export default function Page() {
