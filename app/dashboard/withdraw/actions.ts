@@ -1,6 +1,12 @@
 "use server";
 
 import { createSupabaseAdmin } from "@/lib/supabase/server";
+import {
+  escapeHtmlEmail,
+  notifyUserByEmail,
+  safeUserGreeting,
+  userEmailWrap,
+} from "@/lib/email/user-transactional";
 import { revalidatePath } from "next/cache";
 
 async function getAdminEmail(): Promise<string | null> {
@@ -115,6 +121,19 @@ export async function submitWithdrawalRequest(
     `;
     await sendAdminEmail(subject, html, adminEmail);
   }
+
+  const greet = safeUserGreeting(userName, userEmail);
+  const inner = `
+    <p>We received your withdrawal request.</p>
+    <p><strong>Method:</strong> ${escapeHtmlEmail(method)}<br/>
+    <strong>Amount:</strong> $${escapeHtmlEmail(String(amount))}</p>
+    <p>We will email you again when it has been processed. You can also check your dashboard for updates.</p>
+  `;
+  await notifyUserByEmail(
+    userEmail,
+    "Withdrawal request received — Bridgecore",
+    userEmailWrap(inner, greet)
+  );
 
   return {
     ok: true,

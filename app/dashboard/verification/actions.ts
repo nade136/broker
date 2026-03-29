@@ -1,6 +1,12 @@
 "use server";
 
 import { createSupabaseAdmin } from "@/lib/supabase/server";
+import {
+  appBaseUrl,
+  notifyUserByEmail,
+  safeUserGreeting,
+  userEmailWrap,
+} from "@/lib/email/user-transactional";
 import { revalidatePath } from "next/cache";
 
 export type SubmitKycResult = { ok: true } | { ok: false; error: string };
@@ -46,5 +52,24 @@ export async function submitKyc(userId: string, idDocumentUrl: string, selfieUrl
 
   revalidatePath("/dashboard/verification");
   revalidatePath("/admin/verification");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("email, full_name")
+    .eq("id", userId)
+    .maybeSingle();
+  if (profile?.email) {
+    const greet = safeUserGreeting(profile.full_name as string | null, profile.email as string);
+    const inner = `
+      <p>We received your identity verification documents and will review them shortly.</p>
+      <p>We will email you again once there is a decision. You can also check status on your <a href="${appBaseUrl()}/dashboard/verification">Verification</a> page.</p>
+    `;
+    await notifyUserByEmail(
+      profile.email as string,
+      "Verification documents received — Bridgecore",
+      userEmailWrap(inner, greet)
+    );
+  }
+
   return { ok: true };
 }

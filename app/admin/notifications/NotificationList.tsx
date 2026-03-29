@@ -5,7 +5,7 @@ import {
   markNotificationRead,
   acceptDeposit,
   rejectDepositNotification,
-  acceptWithdrawal,
+  submitAcceptWithdrawalForm,
   rejectWithdrawalNotification,
   submitNewSignupDecision,
   deleteNotification,
@@ -146,8 +146,20 @@ export default function NotificationList({
                       </>
                     )}
                     {n.type === "withdrawal_request" && (
-                      <>
-                        <form action={acceptWithdrawal.bind(null, n.id)} className="inline">
+                      <div className="flex w-full max-w-md flex-col items-end gap-2">
+                        <form action={submitAcceptWithdrawalForm} className="flex w-full flex-col items-stretch gap-2 rounded-lg border border-gray-200 bg-gray-50/80 p-2 dark:border-gray-700 dark:bg-slate-800/50">
+                          <input type="hidden" name="notificationId" value={n.id} />
+                          <label className="flex cursor-pointer items-start gap-2 text-left text-[11px] text-gray-600 dark:text-gray-400">
+                            <input
+                              type="checkbox"
+                              name="forceWithoutBalance"
+                              className="mt-0.5 rounded border-gray-300 text-amber-600 focus:ring-amber-500"
+                            />
+                            <span>
+                              Approve without debiting balance (use if you paid the user outside the platform, or
+                              balances do not match this request).
+                            </span>
+                          </label>
                           <button
                             type="submit"
                             className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700"
@@ -155,7 +167,7 @@ export default function NotificationList({
                             Approve
                           </button>
                         </form>
-                        <form action={rejectWithdrawalNotification.bind(null, n.id)} className="inline">
+                        <form action={rejectWithdrawalNotification.bind(null, n.id)} className="inline self-end">
                           <button
                             type="submit"
                             className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700"
@@ -163,7 +175,7 @@ export default function NotificationList({
                             Decline
                           </button>
                         </form>
-                      </>
+                      </div>
                     )}
                     {n.type === "new_signup" && (
                       <form

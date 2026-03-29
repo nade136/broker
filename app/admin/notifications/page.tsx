@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { createSupabaseAdmin } from "@/lib/supabase/server";
 import NotificationList from "./NotificationList";
+import NotificationsFlashBanner from "./NotificationsFlashBanner";
 import { markAllNotificationsRead, clearAllNotifications } from "./actions";
 
 export const metadata: Metadata = {
@@ -49,24 +50,7 @@ export default async function AdminNotificationsPage({ searchParams }: Notificat
           </p>
         </div>
         <div className="flex shrink-0 flex-wrap gap-2">
-          {flash && (() => {
-        const lower = flash.toLowerCase();
-        const isError = lower.startsWith("error") || lower.includes("could not remove");
-        const emailMiss =
-          lower.includes("email not sent") ||
-          lower.includes("no user email") ||
-          lower.includes("no resend");
-        const className = isError
-          ? "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-300"
-          : emailMiss
-            ? "bg-amber-50 text-amber-900 dark:bg-amber-900/20 dark:text-amber-200"
-            : "bg-emerald-50 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-200";
-        return (
-          <p className={`rounded-lg px-3 py-2 text-xs ${className}`} role="status">
-            {flash}
-          </p>
-        );
-      })()}
+          {flash && <NotificationsFlashBanner message={flash} />}
 
       {list.some((n) => !n.read_at) && (
             <form action={markAllNotificationsRead}>

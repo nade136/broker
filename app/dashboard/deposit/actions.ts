@@ -1,6 +1,12 @@
 "use server";
 
 import { createSupabaseAdmin } from "@/lib/supabase/server";
+import {
+  escapeHtmlEmail,
+  notifyUserByEmail,
+  safeUserGreeting,
+  userEmailWrap,
+} from "@/lib/email/user-transactional";
 import { revalidatePath } from "next/cache";
 
 async function getAdminEmail(): Promise<string | null> {
@@ -106,6 +112,19 @@ export async function submitDepositProof(
     `;
     await sendAdminEmail(subject, html, adminEmail);
   }
+
+  const greet = safeUserGreeting(userName, userEmail);
+  const inner = `
+    <p>We received your deposit proof.</p>
+    <p><strong>Payment method:</strong> ${escapeHtmlEmail(paymentMethod)}<br/>
+    <strong>Amount:</strong> ${escapeHtmlEmail(amount || "—")}</p>
+    <p>Our team will review it shortly. We will email you when there is an update.</p>
+  `;
+  await notifyUserByEmail(
+    userEmail,
+    "Deposit proof received — Bridgecore",
+    userEmailWrap(inner, greet)
+  );
 
   return {
     ok: true,

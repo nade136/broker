@@ -40,6 +40,27 @@ export default function AdminUsersClient({
     if (listError) setError(listError);
   }, [listError]);
 
+  /** Live updates when profiles change (e.g. signup approved in Notifications). Requires Realtime enabled on `profiles` in Supabase. */
+  useEffect(() => {
+    let debounce: ReturnType<typeof setTimeout> | undefined;
+    const bump = () => {
+      if (debounce) clearTimeout(debounce);
+      debounce = setTimeout(() => router.refresh(), 250);
+    };
+    const channel = supabase
+      .channel("admin-users-profiles")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "profiles" },
+        bump
+      )
+      .subscribe();
+    return () => {
+      if (debounce) clearTimeout(debounce);
+      supabase.removeChannel(channel);
+    };
+  }, [router]);
+
   const setRole = async (userId: string, role: "admin" | "user") => {
     setError("");
     const { error: e } = await supabase.from("profiles").update({ role }).eq("id", userId);

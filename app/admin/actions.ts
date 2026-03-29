@@ -13,9 +13,15 @@ type AdminGate =
   | { ok: true; callerId: null; viaAdminCookie: true }
   | { ok: false; error: string };
 
-/** Prefer Supabase JWT; if missing (e.g. different port, expired storage), allow same admin_session cookie as middleware. */
+/**
+ * Prefer Supabase JWT when it belongs to role admin.
+ * Fall back to admin_session cookie (same as middleware): only one Supabase session exists per origin,
+ * so logging into the user dashboard can replace the staff session while the staff cookie is still set.
+ */
 async function assertAdminCaller(accessToken: string | null | undefined): Promise<AdminGate> {
   const admin = createSupabaseAdmin();
+  const cookieStore = await cookies();
+  const hasStaffCookie = cookieStore.get("admin_session")?.value === "1";
 
   if (accessToken?.trim()) {
     const clientWithToken = createClient(url, anonKey, {
@@ -30,16 +36,18 @@ async function assertAdminCaller(accessToken: string | null | undefined): Promis
         .from("profiles")
         .select("role")
         .eq("id", caller.id)
-        .single();
+        .maybeSingle();
       if (profile?.role === "admin") {
         return { ok: true, callerId: caller.id };
+      }
+      if (hasStaffCookie) {
+        return { ok: true, callerId: null, viaAdminCookie: true };
       }
       return { ok: false, error: "Only staff can perform this action." };
     }
   }
 
-  const cookieStore = await cookies();
-  if (cookieStore.get("admin_session")?.value === "1") {
+  if (hasStaffCookie) {
     return { ok: true, callerId: null, viaAdminCookie: true };
   }
 
@@ -93,6 +101,7 @@ export async function createAdminUser(
     };
   }
 
+  revalidatePath("/admin/users");
   return { ok: true };
 }
 
