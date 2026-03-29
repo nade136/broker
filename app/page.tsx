@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import SmartsuppChat from "./components/SmartsuppChat";
 import Header from "./components/Header";
 import InsightsCarousel from "./components/InsightsCarousel";
 import TestimonialsCarousel from "./components/TestimonialsCarousel";
@@ -835,6 +836,7 @@ export default function Home() {
           </div>
         </footer>
       </main>
+      <SmartsuppChat />
     </div>
   );
 }

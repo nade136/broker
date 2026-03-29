@@ -1,7 +1,8 @@
- "use client";
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import SmartsuppChat from "../components/SmartsuppChat";
 import ThemeToggle from "../components/ThemeToggle";
 
 const sidebarLinks = [
@@ -97,6 +98,7 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   return (
+    <>
     <div className="flex min-h-screen bg-gray-50 text-[#141d22] dark:bg-[#020617] dark:text-gray-100">
       <Sidebar />
       <div className="flex min-h-screen flex-1 flex-col">
@@ -130,6 +132,8 @@ export default function AppLayout({
         </main>
       </div>
     </div>
+    <SmartsuppChat />
+    </>
   );
 }
 
