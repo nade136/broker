@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseAdmin } from "@/lib/supabase/server";
+import { getAdminNotificationEmail, sendTransactionalEmail } from "@/lib/email/resend";
 
 const CRON_SECRET = process.env.CRON_SECRET;
+
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
 
 /**
  * Maturity cron job:
@@ -51,6 +60,8 @@ async function runMaturityJob() {
       if (due.length > 0) {
         const { data: existing } = await admin.from("maturity_events").select("user_id, plan_id");
         const existingSet = new Set((existing ?? []).map((e: { user_id: string; plan_id: string }) => `${e.user_id}:${e.plan_id}`));
+        const adminInbox = await getAdminNotificationEmail();
+        const appUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
         for (const s of due) {
           if (existingSet.has(`${s.user_id}:${s.plan_id}`)) continue;
@@ -96,13 +107,30 @@ async function runMaturityJob() {
 
           const { data: profile } = await admin.from("profiles").select("full_name, email").eq("id", s.user_id).single();
           const name = (profile as { full_name?: string; email?: string } | null)?.full_name ?? (profile as { email?: string } | null)?.email ?? s.user_id;
-          await admin.from("notifications").insert({
+          const userEmail = (profile as { email?: string } | null)?.email?.trim() ?? "";
+          const { error: notifErr } = await admin.from("notifications").insert({
             type: "maturity_pending",
             user_id: s.user_id,
             title: "Maturity pending",
             message: `${name} – plan matured. Amount: ${maturityAmount}. Approve or reject within 5 min.`,
             metadata: { maturity_event_id: event.id, maturity_amount: maturityAmount },
           });
+          if (!notifErr && adminInbox) {
+            const safeName = escapeHtml(String(name));
+            const safeEmail = escapeHtml(userEmail || "—");
+            const subject = `Plan matured: ${userEmail || name}`;
+            const html = `
+              <p><strong>Maturity pending</strong></p>
+              <p><strong>User:</strong> ${safeName} (${safeEmail})</p>
+              <p><strong>Maturity amount:</strong> ${maturityAmount}</p>
+              <p>Approve or reject within about 5 minutes (or the system will auto-approve).</p>
+              <p><a href="${appUrl}/admin/notifications">Open admin notifications</a></p>
+            `;
+            const sent = await sendTransactionalEmail(adminInbox, subject, html);
+            if (!sent.ok) {
+              console.error("Maturity cron: admin email failed", sent);
+            }
+          }
         }
       }
     }

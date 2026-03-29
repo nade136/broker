@@ -9,6 +9,7 @@ export default function CreateAccountForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [adminNotifyWarning, setAdminNotifyWarning] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,7 +40,10 @@ export default function CreateAccountForm() {
       return;
     }
 
-    await notifyAdminNewUserSignup(email, fullName, data.user?.id ?? null);
+    const notifyResult = await notifyAdminNewUserSignup(email, fullName, data.user?.id ?? null);
+    if (!notifyResult.ok) {
+      setAdminNotifyWarning(notifyResult.reason);
+    }
 
     if (data.user && data.session) {
       await supabase.auth.signOut();
@@ -69,6 +73,11 @@ export default function CreateAccountForm() {
         {message && (
           <p className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
             {message}
+          </p>
+        )}
+        {adminNotifyWarning && (
+          <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900">
+            <strong>Admin email:</strong> {adminNotifyWarning}
           </p>
         )}
         <div>
